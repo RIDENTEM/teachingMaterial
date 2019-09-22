@@ -8,21 +8,20 @@ public class benderMovement : MonoBehaviour
 {
 
 
+    private float benderCurrentSpeed = 0.0f;
     private float benderMaxSpeed = 10.0f; // The max speed bender can go
     private float groundedRadius = 0.2f; // The radius of our ground check
-    private float jumpForce = 200.0f; // How high bender will jump
+    private float benderJumpForce = 400.0f;
     private bool isGrounded = false; // Determines whether or not bender is touching the ground
     private bool isJumping; // Determines whether or not bender is jumping
-    private SpriteRenderer benderSprite; // This is our bender sprite, which is just the image we see of him
     private bool facingRight; // Determines if bender is facing our right
+    private SpriteRenderer benderSprite; // This is our bender sprite, which is just the image we see of him
     private Rigidbody2D benderRB; 
-    private float benderCurrentSpeed = 0.0f;
     private Animator benderAnimator;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private float benderJumpForce = 400.0f;
 
-
+    // The first function that is called on any GameObject when Play mode is activated
     private void Awake()
     {
         facingRight = true;
@@ -32,7 +31,7 @@ public class benderMovement : MonoBehaviour
         isJumping = false;
     }
 
-
+    // Flip bender's sprite
     void flipSprite()
     {
         benderSprite.flipX = facingRight;
@@ -49,15 +48,14 @@ public class benderMovement : MonoBehaviour
 
         if (isGrounded)
         { 
-
             benderAnimator.SetFloat("Speed", Mathf.Abs(benderCurrentSpeed));
              
-
-            // Set the velocity of bender's rigidbody to the value we get from our input multipled by his max speed
-            // and the velocity he is traveling on the y axis which will be calculated when we jump
-            benderRB.velocity = new Vector2(benderCurrentSpeed * benderMaxSpeed, benderRB.velocity.y);
-
+            
         }
+        // Set the velocity of bender's rigidbody to the value we get from our input multipled by his max speed
+        // and the velocity he is traveling on the y axis which will be calculated when we jump
+        benderRB.velocity = new Vector2(benderCurrentSpeed * benderMaxSpeed, benderRB.velocity.y);
+
     }
 
     // Gets called every 0.02 seconds, or fixed frame
@@ -98,7 +96,7 @@ public class benderMovement : MonoBehaviour
         {
             isGrounded = false;
             benderAnimator.SetBool("isGrounded", false);
-            benderRB.AddForce(new Vector2(0.0f, jumpForce));
+            benderRB.AddForce(new Vector2(0.0f, benderJumpForce));
         }
         isJumping = false;
 
